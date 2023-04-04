@@ -18,7 +18,8 @@ public class TestController {
     }
 
     @RequestMapping("/mess")
-    public void sendMessage(@RequestBody Object o){
-        kafkaTemplate.send("topic",o);
+    public void sendMessage(){
+
+        kafkaTemplate.send("topic","Fırat DEMİRCAN 04-04-2023");
     }
 }
