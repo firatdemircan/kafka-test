@@ -1,0 +1,40 @@
+server:
+  port: 8010
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8011/eureka/
+  instance:
+    hostname: localhost
+    instance-id: ${spring.application.name}:${random.uuid}
+    prefer-ip-address: true
+
+spring:
+  application:
+    name: gateway-service
+  cloud:
+    discovery:
+      enabled: true
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      routes:
+        - id: producer
+          uri: lb://producer-service
+          predicates:
+            - Path=/producer/**
+          filters:
+          - RewritePath=/producer/(?<segment>.*),/$\{segment}
+
+        - id: consumer
+          uri: lb://consumer-service
+          predicates:
+            - Path=/consumer/**
+          filters:
+            - RewritePath=/consumer/(?<segment>.*),/$\{segment}
+#            - Header=Authorization, Bearer (.*)
+      #          filters:
+      #            - AuthorizationHeaderFilter
