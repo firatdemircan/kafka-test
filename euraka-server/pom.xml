@@ -6,40 +6,36 @@
         <artifactId>kafka-test</artifactId>
         <version>1.0-SNAPSHOT</version>
     </parent>
-    <artifactId>kafka-service</artifactId>
-    <name>Archetype - kafka-service</name>
+    <artifactId>euraka-server</artifactId>
+    <name>Archetype - euraka-server</name>
     <url>http://maven.apache.org</url>
 
+
+
     <dependencies>
-<!--        <dependency>-->
-<!--            <groupId>org.springframework.boot</groupId>-->
-<!--            <artifactId>spring-boot-starter-web</artifactId>-->
-<!--        </dependency>-->
         <dependency>
-            <groupId>org.example</groupId>
-            <artifactId>core-module</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
         </dependency>
     </dependencies>
 
-
     <build>
         <plugins>
+
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <excludes>
-                        <exclude>
-                            <groupId>org.projectlombok</groupId>
-                            <artifactId>lombok</artifactId>
-                        </exclude>
-                    </excludes>
-                </configuration>
+                <version>${spring.boot.maven.plugin.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
 
         </plugins>
     </build>
-
 
 </project>

@@ -5,3 +5,14 @@ server:
 spring:
   kafka:
     bootstrap-servers: localhost:29092
+  application:
+    name: kafka-service
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8011/eureka/
+  instance:
+    hostname: localhost
+    instance-id: ${spring.application.name}:${random.uuid}
+    prefer-ip-address: true

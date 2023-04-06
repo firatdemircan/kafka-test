@@ -11,6 +11,9 @@
         <module>producer-service</module>
         <module>consumer-service</module>
         <module>kafka-service</module>
+        <module>core-module</module>
+        <module>gateway-service</module>
+        <module>euraka-server</module>
     </modules>
 
 
