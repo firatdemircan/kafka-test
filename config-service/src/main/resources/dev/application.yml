@@ -1,0 +1,27 @@
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8011/eureka
+  instance:
+    hostname: localhost
+    prefer-ip-address: true
+
+
+spring:
+
+  datasource:
+    url: jdbc:postgresql://localhost/foo
+    username: postgres
+    password: 4744c4744C
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        jdbc:
+          batch_size: 1000
+          order_inserts: true
+      generate_statistics: true
+  kafka:
+    bootstrap-servers: localhost:29092

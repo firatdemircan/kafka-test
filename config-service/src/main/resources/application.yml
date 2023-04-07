@@ -1,0 +1,25 @@
+server:
+  port: 8012
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8011/eureka
+  instance:
+    instance-id: ${spring.application.name}:${random.uuid}
+    #    hostname: localhost
+    prefer-ip-address: true
+
+
+spring:
+  cloud:
+    config:
+      server:
+        native:
+          search-locations: classpath:${CONFIG_CLASSPATH:/dev}
+      allow-override: true
+      override-none: true
+      override-system-properties: true
+  profiles:
+    active: native
+  application:
+    name: config-server
