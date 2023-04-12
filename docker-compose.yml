@@ -1,0 +1,89 @@
+services:
+  zookeeper:
+    image: confluentinc/cp-zookeeper
+    container_name: zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    restart: unless-stopped
+    ports:
+      - 22181:2181
+    networks:
+      - backend
+
+  kafka:
+    image: confluentinc/cp-kafka
+    depends_on:
+      - zookeeper
+    container_name: kafka
+    ports:
+      - 29092:29092
+      - 9092:9092
+    networks:
+      - backend
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://kafka:29092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    restart: unless-stopped
+
+  eureka-server:
+    build:
+      context: euraka-server/deploy
+      dockerfile: Dockerfile
+    container_name: eureka-server
+    ports:
+      - "8011:8011"
+    restart: unless-stopped
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+      - TZ=Europe/Istanbul
+    networks:
+      - backend
+
+  config-service:
+    build:
+      context: config-service/deploy
+      dockerfile: Dockerfile
+    container_name: config-server
+    ports:
+      - "8012:8012"
+    restart: unless-stopped
+    environment:
+      - EUREKA_SERVER_URL=http://eureka-server:8011/eureka
+      - CONFIG_CLASSPATH=/dev
+      - TZ=Europe/Istanbul
+    depends_on:
+      - eureka-server
+    networks:
+      - backend
+  api-gateway:
+    build:
+      context: gateway-service/deploy
+      dockerfile: Dockerfile
+    container_name: api-gateway
+    ports:
+      - "8010:8010"
+    restart: unless-stopped
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+      - TZ=Europe/Istanbul
+    depends_on:
+      - eureka-server
+      - config-service
+    networks:
+      - backend
+
+networks:
+  backend:
+    driver: bridge
+volumes:
+  mongo-data:
+    driver: local
+  elasticsearch-data:
+    driver: local
+  graylog-data:
+    driver: local
