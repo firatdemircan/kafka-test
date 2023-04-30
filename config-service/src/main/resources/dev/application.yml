@@ -8,7 +8,6 @@ eureka:
 
 
 spring:
-
   datasource:
     url: jdbc:postgresql://localhost/foo
     username: postgres

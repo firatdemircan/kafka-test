@@ -7,6 +7,9 @@ spring:
     bootstrap-servers: localhost:29092
   application:
     name: kafka-service
+  cloud:
+    config:
+        enabled: false
 
 eureka:
   client:
